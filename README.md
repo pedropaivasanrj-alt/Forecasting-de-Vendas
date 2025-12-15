@@ -26,7 +26,7 @@ Minha primeira hipótese era que, devido ao crescimento da empresa, um modelo **
 * **Resultado:** Os testes mostraram que o modelo **Aditivo** (sazonalidade fixa) foi mais robusto e estável para os dados de teste.
 * **Decisão:** Seguir com o modelo Aditivo como base (Baseline).
 
-![Batalha de Modelos](grafico_1_global.png)
+![Batalha de Modelos](C:\Users\pedro\OneDrive - SempreUniNassau\ESTUDOS\Forecasting-de-Vendas\notebooks\grafico_1_global.png)
 
 ### Fase 2: O Mistério Regional (A Armadilha do MAPE)
 Ao quebrar a previsão por regiões (Norte, Sul, Leste, Oeste), os dados indicaram um **erro catastrófico de ~57% na região Sul**.
@@ -34,21 +34,21 @@ Ao quebrar a previsão por regiões (Norte, Sul, Leste, Oeste), os dados indicar
 * **Solução:** Alterei a métrica de avaliação para **MAE (Erro Absoluto em Unidades)**.
 * **Insight de Negócio:** O erro operacional do Sul (~27 caixas) é, na verdade, idêntico ao das outras regiões. O verdadeiro risco logístico foi identificado na região **Oeste**, que possui o maior desvio absoluto de estoque.
 
-![Analise Regional](grafico_2_regional.png)
+![Analise Regional](C:\Users\pedro\OneDrive - SempreUniNassau\ESTUDOS\Forecasting-de-Vendas\notebooks\grafico_2_regional.png)
 
 ### Fase 3: Otimização e Prova Real (2023)
 Utilizei **Grid Search** para testar todas as combinações possíveis de hiperparâmetros (Tendência, Sazonalidade, Amortecimento) automaticamente.
 * O modelo vencedor foi confrontado com os dados reais de 2023 (que o modelo não tinha visto durante o treino).
 * **Resultado:** O modelo seguiu a tendência real com alta aderência, validando sua confiança para produção.
 
-![Prova Real 2023](grafico_3_validacao_real.png)
+![Prova Real 2023](C:\Users\pedro\OneDrive - SempreUniNassau\ESTUDOS\Forecasting-de-Vendas\notebooks\grafico_3_validacao_real.png)
 
 ---
 
 ##  O Futuro: Previsão 2024
 Com o modelo validado, geramos a projeção final de demanda para o próximo ano fiscal.
 
-![Previsão Final](grafico_4_futuro_final.png)
+![Previsão Final](C:\Users\pedro\OneDrive - SempreUniNassau\ESTUDOS\Forecasting-de-Vendas\notebooks\grafico_4_futuro_final.png)
 
 > **Entrega Final:** Os dados previstos foram exportados para `data/forecast_final_2024.csv` para consumo da equipe de planejamento.
 
