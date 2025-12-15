@@ -26,7 +26,7 @@ Minha primeira hipótese era que, devido ao crescimento da empresa, um modelo **
 * **Resultado:** Os testes mostraram que o modelo **Aditivo** (sazonalidade fixa) foi mais robusto e estável para os dados de teste.
 * **Decisão:** Seguir com o modelo Aditivo como base (Baseline).
 
-(![Batalha de Modelos](image.png))
+![Batalha de Modelos](notebooks/grafico_1_global.png)
 
 ### Fase 2: O Mistério Regional (A Armadilha do MAPE)
 Ao quebrar a previsão por regiões (Norte, Sul, Leste, Oeste), os dados indicaram um **erro catastrófico de ~57% na região Sul**.
