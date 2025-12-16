@@ -80,5 +80,4 @@ O gráfico abaixo demonstra a continuidade perfeita entre os dados legados (Pret
 │   └── assets/                           # Imagens e Gráficos gerados
 └── README.md
 
----
 
