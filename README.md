@@ -79,7 +79,5 @@ O gráfico abaixo demonstra a continuidade perfeita entre os dados legados (Pret
 │   ├── 3.0-modelagem-sarimax.ipynb       # Treinamento e Previsão 2026
 │   └── assets/                           # Imagens e Gráficos gerados
 └── README.md
-
-## Conclusão 
-
-* Este projeto demonstra como **Ciência de Dados** pode ser usada para preencher lacunas de informação e criar ferramentas de suporte à decisão. Saímos de uma planilha de vendas antiga para um **Simulador de Cenários Estratégicos**, capaz de orientar a logística e o marketing para o próximo ano fiscal.
+---
+## Conclusão
