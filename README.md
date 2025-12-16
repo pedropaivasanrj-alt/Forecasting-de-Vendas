@@ -1,67 +1,81 @@
-# Forecasting-de-Vendas
-Prever demanda de estoque para varejo.
+# 📈 Strategic Demand Forecasting: Data Augmentation & Causal Modeling
 
-
-# 📈 Forecast AI: Previsão de Demanda para Varejo
-
+![Status](https://img.shields.io/badge/Status-Concluded-success)
 ![Python](https://img.shields.io/badge/Python-3.10+-blue)
-![Status](https://img.shields.io/badge/Status-Concluído-success)
-![Focus](https://img.shields.io/badge/Foco-Business_Insights-orange)
+![Modeling](https://img.shields.io/badge/Model-SARIMAX-orange)
 
-## 💼 O Desafio de Negócio
-Uma grande rede de varejo (Superstore) enfrenta o desafio clássico de **balanceamento de estoque**:
-* **Excesso de estoque:** Custo de armazenamento e capital parado.
-* **Falta de estoque (Stockout):** Perda de receita e insatisfação do cliente.
+## 💼 Visão Executiva (Business Overview)
 
-**Objetivo:** Desenvolver um modelo de Machine Learning (Time Series) capaz de prever a demanda futura com precisão suficiente para orientar a logística, validando os resultados com dados reais de 2023 antes de projetar 2024.
+Este projeto não é apenas um exercício de previsão de séries temporais; é uma solução completa de **Planejamento Estratégico de Demanda**.
+
+O objetivo principal foi superar um desafio comum no mundo real: **A falta de dados recentes e a necessidade de simular cenários futuros condicionados a decisões de negócio.** Em vez de apenas projetar uma linha de tendência baseada no passado (modelos univariados), construí um **Ecossistema de Inferência Causal**. O modelo final (SARIMAX) não prevê apenas "quanto vamos vender", mas responde à pergunta: *"Se aumentarmos o investimento em Marketing e aplicarmos descontos agressivos, qual será a resposta da demanda?"*
 
 ---
 
-## 🔍 A Jornada do Projeto (Storytelling)
+## 🛠️ O Desafio Técnico (The Problem)
 
-Este projeto não seguiu apenas uma linha reta. Ele foi construído através de ciclos de **testes de hipóteses e descobertas estatísticas**.
+O dataset original continha dados transacionais históricos até **2022**. Para realizar um planejamento orçamentário para o ano fiscal de **2026**, foi necessário:
 
-### Fase 1: A Escolha do Modelo Global (Aditivo vs Multiplicativo)
-Minha primeira hipótese era que, devido ao crescimento da empresa, um modelo **Multiplicativo** (que amplia a sazonalidade conforme o volume cresce) seria superior.
-* **Resultado:** Os testes mostraram que o modelo **Aditivo** (sazonalidade fixa) foi mais robusto e estável para os dados de teste.
-* **Decisão:** Seguir com o modelo Aditivo como base (Baseline).
-
-![Batalha de Modelos](notebooks/grafico_1_global.png)
-
-### Fase 2: O Mistério Regional (A Armadilha do MAPE)
-Ao quebrar a previsão por regiões (Norte, Sul, Leste, Oeste), os dados indicaram um **erro catastrófico de ~57% na região Sul**.
-* **Investigação:** Aprofundando a análise, descobri que o erro percentual (MAPE) estava distorcido pelo **baixo volume de vendas** dessa região (efeito do "denominador pequeno").
-* **Solução:** Alterei a métrica de avaliação para **MAE (Erro Absoluto em Unidades)**.
-* **Insight de Negócio:** O erro operacional do Sul (~27 caixas) é, na verdade, idêntico ao das outras regiões. O verdadeiro risco logístico foi identificado na região **Oeste**, que possui o maior desvio absoluto de estoque.
-
-![Analise Regional](notebooks/grafico_2_regional.png)
-
-### Fase 3: Otimização e Prova Real (2023)
-Utilizei **Grid Search** para testar todas as combinações possíveis de hiperparâmetros (Tendência, Sazonalidade, Amortecimento) automaticamente.
-* O modelo vencedor foi confrontado com os dados reais de 2023 (que o modelo não tinha visto durante o treino).
-* **Resultado:** O modelo seguiu a tendência real com alta aderência, validando sua confiança para produção.
-
-![Prova Real 2023](notebooks/grafico_3_validacao_real.png)
+1.  **Preencher a lacuna temporal (2023-2025):** Criar dados sintéticos realistas que respeitassem a sazonalidade e a distribuição geográfica original.
+2.  **Incorporar Causalidade:** O volume de vendas não podia ser aleatório; ele precisava ser uma consequência matemática de variáveis controláveis (Marketing e Preço).
+3.  **Modelar o Futuro (2026):** Treinar um modelo capaz de ler essas variáveis exógenas e projetar a demanda.
 
 ---
 
-##  O Futuro: Previsão 2024
-Com o modelo validado, geramos a projeção final de demanda para o próximo ano fiscal.
+## 🚀 Arquitetura da Solução
 
-![Previsão Final](notebooks/grafico_4_futuro_final.png)
+O projeto foi estruturado em um pipeline de 3 etapas:
 
-> **Entrega Final:** Os dados previstos foram exportados para `data/forecast_final_2024.csv` para consumo da equipe de planejamento.
+### 1. Análise Exploratória (`1.0-analise-exploratoria`)
+Diagnóstico profundo do histórico (2019-2022).
+* Identificação de Sazonalidade (Picos em Nov/Dez).
+* Análise de Pareto (Quais produtos/regiões carregam o faturamento).
+* Decomposição de Séries Temporais.
+
+### 2. Engenharia de Dados & Simulação (`2.0-engenharia-de-dados`)
+A etapa mais complexa do projeto. Utilizei técnicas de **Data Augmentation** para simular um cenário de recuperação de mercado entre 2023 e 2025.
+* **Criação de Variáveis Exógenas:** Simulei curvas de investimento em Marketing (tendência de alta) e Taxas de Desconto (picos na Black Friday).
+* **Cálculo de Elasticidade:** As vendas de 2023-2025 não foram "chutadas". Elas foram calculadas usando elasticidade-preço e retorno sobre investimento (ROAS).
+    > *Fórmula: Vendas = Sazonalidade × (Log(Marketing) × Elasticidade) × (Desconto ^ Sensibilidade)*
+
+### 3. Modelagem Causal - SARIMAX (`3.0-modelagem-sarimax`)
+Substituí modelos clássicos (Holt-Winters) pelo **SARIMAX**, permitindo a inclusão de variáveis externas.
+* **Treino:** O modelo aprendeu a correlação entre "Gastar mais em Ads" e "Vender mais".
+* **Forecast 2026:** Projetei um cenário agressivo para 2026 (Recorde Histórico) e o modelo calculou a demanda necessária para suportar esse plano.
 
 ---
 
-## 🛠️ Tecnologias Utilizadas
-* **Linguagem:** Python
-* **Manipulação de Dados:** Pandas, Numpy
+## 📊 Resultados Visuais
+
+### A Visão Integrada: Passado, Simulação e Futuro
+O gráfico abaixo demonstra a continuidade perfeita entre os dados legados (Preto), a engenharia de dados (Cinza) e a previsão da IA (Laranja).
+
+![Forecast Final](notebooks/assets/forecast_final_sarimax.png)
+
+*Observe como o modelo SARIMAX (Laranja) replica com precisão os picos de final de ano, respondendo ao aumento planejado de Marketing e Descontos para 2026.*
+
+---
+
+## 💻 Stack Tecnológico
+
+* **Linguagem:** Python 3.x
+* **Manipulação de Dados:** Pandas, NumPy
+* **Estatística & Modelagem:** Statsmodels (SARIMAX, Exponential Smoothing)
 * **Visualização:** Matplotlib, Seaborn
-* **Modelagem Estatística:** Statsmodels (Holt-Winters Exponential Smoothing)
-* **Métricas de Performance:** Scikit-Learn (MAE, MAPE)
+* **Conceitos:** Time Series Analysis, Causal Inference, Data Augmentation.
 
-## ⚙️ Como Executar
-1. Clone o repositório:
-```bash
-git clone [https://github.com/pedropaivasanrj-alt/Forecasting-de-Vendas.git](https://github.com/pedropaivasanrj-alt/Forecasting-de-Vendas.git)
+---
+
+## 📂 Estrutura do Repositório
+
+```text
+├── data/
+│   ├── raw/                  # Dados originais (imutáveis)
+│   ├── processed/            # Dados com variáveis exógenas geradas (Output do notebook 2.0)
+│   └── outputs/              # CSVs finais com as previsões
+├── notebooks/
+│   ├── 1.0-analise-exploratoria.ipynb    # EDA e Diagnóstico
+│   ├── 2.0-engenharia-de-dados.ipynb     # Geração de Cenários e Variáveis Causais
+│   ├── 3.0-modelagem-sarimax.ipynb       # Treinamento e Previsão 2026
+│   └── assets/                           # Imagens e Gráficos gerados
+└── README.md
