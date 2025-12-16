@@ -79,5 +79,6 @@ O gráfico abaixo demonstra a continuidade perfeita entre os dados legados (Pret
 │   ├── 3.0-modelagem-sarimax.ipynb       # Treinamento e Previsão 2026
 │   └── assets/                           # Imagens e Gráficos gerados
 └── README.md
+
 ---
-## Conclusão
+
